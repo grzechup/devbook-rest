@@ -1,7 +1,6 @@
 package com.pk.thesis.devbook.security;
 
-import java.util.Objects;
-
+import com.pk.thesis.devbook.enpoint.user.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,11 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -39,6 +34,16 @@ public class JwtAuthenticationController {
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new JwtResponse(token));
+    }
+
+    @PostMapping(value = "register")
+    public ResponseEntity<?> createUser(@RequestBody UserDTO user){
+        return ResponseEntity.ok(userDetailsService.save(user));
+    }
+
+    @PostMapping(value = "login")
+    public ResponseEntity<?> login(@RequestBody UserDTO user){
+        return null;
     }
 
     private void authenticate(String username, String password) throws Exception {

@@ -1,13 +1,14 @@
-package com.pk.thesis.devbook.controller.user;
+package com.pk.thesis.devbook.enpoint.user;
 
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
 @Table(name = "user")
-public class User {
+public class UserDAO {
 
     @Id
     @GeneratedValue
@@ -23,8 +24,14 @@ public class User {
     private String email;
 
     @Column
-    private String firstName;
+    private String firstname;
 
     @Column
-    private String lastName;
+    private String lastname;
+
+    @Column(name= "date_of_birth")
+    private Date dateOfBirth;
+
+    @Column
+    private Integer role;
 }

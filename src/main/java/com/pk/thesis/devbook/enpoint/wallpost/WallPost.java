@@ -1,4 +1,4 @@
-package com.pk.thesis.devbook.controller.wallpost;
+package com.pk.thesis.devbook.enpoint.wallpost;
 
 import com.pk.thesis.devbook.utils.StringListConverter;
 import lombok.Data;

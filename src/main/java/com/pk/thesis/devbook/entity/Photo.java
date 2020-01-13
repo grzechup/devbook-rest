@@ -1,4 +1,4 @@
-package com.pk.thesis.devbook.model.entity;
+package com.pk.thesis.devbook.entity;
 
 import lombok.Data;
 

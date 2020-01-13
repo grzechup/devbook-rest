@@ -1,4 +1,4 @@
-package com.pk.thesis.devbook.controller.admin;
+package com.pk.thesis.devbook.enpoint.admin;
 
 import com.pk.ajio.tagger.service.UpdateKeywordsService;
 import org.springframework.beans.factory.annotation.Autowired;

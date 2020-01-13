@@ -1,4 +1,4 @@
-package com.pk.thesis.devbook.controller.user;
+package com.pk.thesis.devbook.enpoint.user;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

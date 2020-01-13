@@ -1,6 +1,5 @@
-package com.pk.thesis.devbook.controller.wallpost;
+package com.pk.thesis.devbook.enpoint.wallpost;
 
-import com.pk.thesis.devbook.controller.wallpost.WallPost;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

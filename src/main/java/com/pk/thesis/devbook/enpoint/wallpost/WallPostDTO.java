@@ -1,6 +1,5 @@
-package com.pk.thesis.devbook.controller.wallpost;
+package com.pk.thesis.devbook.enpoint.wallpost;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

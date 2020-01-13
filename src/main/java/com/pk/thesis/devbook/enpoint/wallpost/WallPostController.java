@@ -1,4 +1,4 @@
-package com.pk.thesis.devbook.controller.wallpost;
+package com.pk.thesis.devbook.enpoint.wallpost;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
