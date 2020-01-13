@@ -1,5 +1,6 @@
-package com.pk.thesis.devbook.model.entity;
+package com.pk.thesis.devbook.controller.wallpost;
 
+import com.pk.thesis.devbook.utils.StringListConverter;
 import lombok.Data;
 
 import javax.persistence.*;
