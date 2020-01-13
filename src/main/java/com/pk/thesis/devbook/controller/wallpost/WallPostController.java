@@ -1,7 +1,5 @@
-package com.pk.thesis.devbook.controller;
+package com.pk.thesis.devbook.controller.wallpost;
 
-import com.pk.thesis.devbook.model.dto.WallPostDTO;
-import com.pk.thesis.devbook.model.entity.WallPost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

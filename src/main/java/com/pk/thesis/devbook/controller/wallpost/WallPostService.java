@@ -1,8 +1,5 @@
-package com.pk.thesis.devbook.controller;
+package com.pk.thesis.devbook.controller.wallpost;
 
-import com.pk.thesis.devbook.model.dto.WallPostDTO;
-import com.pk.thesis.devbook.model.entity.WallPost;
-import com.pk.thesis.devbook.repository.WallPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.pk.ajio.tagger.service.TaggerService;

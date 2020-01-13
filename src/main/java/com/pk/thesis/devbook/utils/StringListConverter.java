@@ -1,4 +1,4 @@
-package com.pk.thesis.devbook.model.entity;
+package com.pk.thesis.devbook.utils;
 
 import javax.persistence.AttributeConverter;
 import java.util.Arrays;
