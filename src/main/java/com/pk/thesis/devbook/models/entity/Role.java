@@ -1,4 +1,6 @@
-package com.pk.thesis.devbook.models;
+package com.pk.thesis.devbook.models.entity;
+
+import com.pk.thesis.devbook.models.ERole;
 
 import javax.persistence.*;
 

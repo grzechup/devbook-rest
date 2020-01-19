@@ -1,10 +1,15 @@
 package com.pk.thesis.devbook.repository;
 
 
-import com.pk.thesis.devbook.models.User;
+import com.pk.thesis.devbook.models.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,4 +19,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	Boolean existsByUsername(String username);
 
 	Boolean existsByEmail(String email);
+
+    Optional<List<User>> findFriendsByUsername(String username);
+
+	@Query("SELECT u FROM User u where username like %?1%")
+	Page<User> searchUsersByUsername(String username, Pageable pageable);
+
+	@Query("SELECT u FROM User u where firstname like %:firstname%")
+	Optional<List<User>> searchUsersByFirstname(@Param("firstname") String firstname);
+
+
+
 }
