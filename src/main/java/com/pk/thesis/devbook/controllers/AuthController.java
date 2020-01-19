@@ -2,8 +2,8 @@ package com.pk.thesis.devbook.controllers;
 
 
 import com.pk.thesis.devbook.models.ERole;
-import com.pk.thesis.devbook.models.Role;
-import com.pk.thesis.devbook.models.User;
+import com.pk.thesis.devbook.models.entity.Role;
+import com.pk.thesis.devbook.models.entity.User;
 import com.pk.thesis.devbook.payload.request.LoginRequest;
 import com.pk.thesis.devbook.payload.request.SignupRequest;
 import com.pk.thesis.devbook.payload.response.JwtResponse;
@@ -118,6 +118,8 @@ public class AuthController {
 		}
 
 		user.setRoles(roles);
+		user.setFirstname(signUpRequest.getFirstname());
+		user.setLastname(signUpRequest.getLastname());
 		userRepository.save(user);
 
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

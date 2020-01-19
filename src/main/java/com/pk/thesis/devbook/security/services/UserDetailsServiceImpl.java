@@ -1,7 +1,7 @@
 package com.pk.thesis.devbook.security.services;
 
 
-import com.pk.thesis.devbook.models.User;
+import com.pk.thesis.devbook.models.entity.User;
 import com.pk.thesis.devbook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

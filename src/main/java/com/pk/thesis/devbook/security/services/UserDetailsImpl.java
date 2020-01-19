@@ -1,7 +1,7 @@
 package com.pk.thesis.devbook.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pk.thesis.devbook.models.User;
+import com.pk.thesis.devbook.models.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
