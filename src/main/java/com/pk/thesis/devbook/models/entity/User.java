@@ -1,7 +1,6 @@
 package com.pk.thesis.devbook.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -9,10 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Entity
@@ -83,37 +79,17 @@ public class User implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Set<BoardPost> likedBoards;
 
-
-/*	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name="tbl_friends",
-			joinColumns=@JoinColumn(name="personId"),
-			inverseJoinColumns=@JoinColumn(name="friendId")
-	)
-	private List<User> friends;
-
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	@JoinTable(name="tbl_friends",
-			joinColumns=@JoinColumn(name="friendId"),
-			inverseJoinColumns=@JoinColumn(name="personId")
-	)
-	private List<User> friendOf;*/
-
-	@OneToMany(mappedBy="to", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="to")
 	private List<Friends> friends;
 
-	@OneToMany(mappedBy="from", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="from")
 	private List<Friends> friendsOf;
 
 	@OneToMany(mappedBy="to")
-	@JsonIgnoreProperties("to")
 	private List<InvitationsToFriends> invitationsToFriends;
 
-
 	@OneToMany(mappedBy="from")
-	@JsonIgnoreProperties("from")
 	private List<InvitationsToFriends> invitedFriends;
-
-
 
 	public User() {
 	}

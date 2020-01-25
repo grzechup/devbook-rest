@@ -14,11 +14,11 @@ public class InvitationsToFriends implements Serializable{
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne( fetch = FetchType.LAZY)
+    @ManyToOne( )
     @JoinColumn(name="from_user_fk")
     private User from;
 
-    @ManyToOne( fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name="to_user_fk")
     private User to;
 

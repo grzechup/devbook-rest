@@ -1,9 +1,11 @@
 package com.pk.thesis.devbook.service;
 
 import com.pk.thesis.devbook.models.dto.UserDTO;
+import com.pk.thesis.devbook.models.entity.Friends;
 import com.pk.thesis.devbook.models.entity.InvitationsToFriends;
 import com.pk.thesis.devbook.models.entity.User;
 import com.pk.thesis.devbook.payload.request.InvitationUsernamesRequest;
+import com.pk.thesis.devbook.repository.FriendsRepository;
 import com.pk.thesis.devbook.repository.InvitationsToFriendsRepository;
 import com.pk.thesis.devbook.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -29,14 +31,17 @@ public class UserService {
     }.getType();
     private Type pageDtoType = new TypeToken<Page<UserDTO>>() {
     }.getType();
+    private FriendsRepository friendsRepository;
 
     @Autowired
     public UserService(UserRepository userRepository,
                        ModelMapper modelMapper,
-                       InvitationsToFriendsRepository invitationsToFriendsRepository) {
+                       InvitationsToFriendsRepository invitationsToFriendsRepository,
+                       FriendsRepository friendsRepository) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.invitationsToFriendsRepository = invitationsToFriendsRepository;
+        this.friendsRepository = friendsRepository;
     }
 
     public UserDTO getUserDTO(String username) {
@@ -76,17 +81,15 @@ public class UserService {
     }
 
     public UserDTO acceptUserInvitationToFriends(InvitationUsernamesRequest request) {
-        User user = getUser(request.getMainUsername());
-/*        User userToAccept = getUser(request.getUsernameToProcess());
-
-        List<User> friendsOfUser = user.getFriends();
-        if(friendsOfUser.contains(userToAccept)){
-            return null;
-        }
-
-        user.getInvitationsToFriends().remove(userToAccept);
-        user.getFriends().add(userToAccept);*/
-        return modelMapper.map(user, UserDTO.class);
+        User mainUser = getUser(request.getMainUsername());
+        User userToAccept = getUser(request.getUsernameToProcess());
+        Friends friends = new Friends(userToAccept, mainUser, new Date());
+        InvitationsToFriends invitationToDelete = mainUser.getInvitationsToFriends().stream()
+                .filter(inv -> inv.getFrom().getUsername().equals(userToAccept.getUsername()))
+                .findFirst().orElse(null);
+        invitationsToFriendsRepository.deleteById(invitationToDelete.getId());
+        friendsRepository.save(friends);
+        return modelMapper.map(mainUser, UserDTO.class);
     }
 
     private User getUser(String username) {
