@@ -2,7 +2,7 @@ package com.pk.thesis.devbook.controllers;
 
 import com.pk.thesis.devbook.DevbookProperties;
 import com.pk.thesis.devbook.models.dto.UserDTO;
-import com.pk.thesis.devbook.models.entity.User;
+import com.pk.thesis.devbook.payload.request.InvitationUsernamesRequest;
 import com.pk.thesis.devbook.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class UserController {
     @GetMapping(value = "/{username}")
     public ResponseEntity<UserDTO> getUser(@PathVariable("username") String username){
         log.info(properties.getPhotoStorePath());
-        return ResponseEntity.ok(userService.getUser(username));
+        return ResponseEntity.ok(userService.getUserDTO(username));
     }
 
     //TODO: dodac parametry do paginacji
@@ -48,9 +48,14 @@ public class UserController {
         return null;
     }
 
-    @PostMapping(value = "/add-friend")
-    public ResponseEntity<User> addFriend(@RequestBody String username) {
-        return ResponseEntity.ok(userService.addFriend(username));
+    @PostMapping(value = "/invite")
+    public ResponseEntity<UserDTO> inviteFriend(@RequestBody InvitationUsernamesRequest request) {
+        return ResponseEntity.ok(userService.inviteFriend(request));
+    }
+
+    @PostMapping("/invitations/accept")
+    public ResponseEntity<UserDTO> acceptUserInvitationToFriends(@RequestBody InvitationUsernamesRequest request){
+        return ResponseEntity.ok(userService.acceptUserInvitationToFriends(request));
     }
 
 }

@@ -15,9 +15,9 @@ public class UserDTO {
     private String lastname;
     private String email;
     private List<UserDTO> friends;
-    private List<UserDTO> friendOf;
-    private List<UserDTO> invitedFriends;
-    private List<UserDTO> invitedToFriends;
+    private List<UserDTO> friendsOf;
+    private List<ToUserDTO> invitedFriends;
+    private List<FromUserDTO> invitationsToFriends;
 
     private List<BoardPost> boardPosts;
     private List<BoardPost> likedBoards;

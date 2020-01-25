@@ -8,7 +8,6 @@ import com.pk.thesis.devbook.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,13 +32,8 @@ public class BoardService {
 
     //TODO: pobrac wszystkich znajomych usera i od nich wyciagnac wszystkie ich boardposty
     public List<BoardPost> getBoardPostsForUser(String username){
-        List<User> friendsOfUser = userRepository.findFriendsByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User has no friends."));
-
+        List<User> friendsOfUser = userRepository.findFriendsByUsername(username);
         modelmapper.map(friendsOfUser, UserDTO.class);
-
-
-
         return null;
     }
 

@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	Boolean existsByEmail(String email);
 
-    Optional<List<User>> findFriendsByUsername(String username);
+    List<User> findFriendsByUsername(String username);
 
 	@Query("SELECT u FROM User u where username like %?1%")
 	Page<User> searchUsersByUsername(String username, Pageable pageable);
@@ -28,6 +28,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query("SELECT u FROM User u where firstname like %:firstname%")
 	Optional<List<User>> searchUsersByFirstname(@Param("firstname") String firstname);
 
-
+	@Query(name = "SELECT * FROM users  INNER JOIN tbl_invites_to_friends \n" +
+			"ON tbl_invites_to_friends.invited_person_id = 2\n" +
+			"WHERE tbl_invites_to_friends.person_id = users.id",
+			nativeQuery = true)
+	List<User> findInvitationsToFriendsByUsername(String username);
 
 }

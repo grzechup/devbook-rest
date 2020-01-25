@@ -1,39 +1,38 @@
 package com.pk.thesis.devbook.models.entity;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Data
+
 @Entity
 @Table(	name = "users", 
 		uniqueConstraints = { 
 			@UniqueConstraint(columnNames = "username"),
 			@UniqueConstraint(columnNames = "email") 
 		})
-public class User {
+public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank
 	@Size(max = 40)
 	private String username;
 
-	@NotBlank
 	@Size(max = 50)
 	@Email
 	private String email;
 
-	@NotBlank
 	@Size(max = 120)
 	private String password;
 
@@ -42,6 +41,12 @@ public class User {
 
 	@Column
 	private String lastname;
+
+	@Column(name = "birth_date")
+	private Date birthDate;
+
+	@Column
+	private Date created;
 
 	@ManyToMany()
 	@JoinTable(	name = "user_roles", 
@@ -63,14 +68,14 @@ public class User {
 	@Column(name = "profile_photo_id")
 	private Long profilePhotoId;*/
 
-	@ManyToMany()
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_board_posts",
 			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "board_post_id"))
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Set<BoardPost> boardPosts = new HashSet<>();
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 			name = "board_posts__like",
 			joinColumns = @JoinColumn(name = "user_id"),
@@ -79,37 +84,34 @@ public class User {
 	private Set<BoardPost> likedBoards;
 
 
-	@ManyToMany
+/*	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="tbl_friends",
 			joinColumns=@JoinColumn(name="personId"),
 			inverseJoinColumns=@JoinColumn(name="friendId")
 	)
 	private List<User> friends;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(name="tbl_friends",
 			joinColumns=@JoinColumn(name="friendId"),
 			inverseJoinColumns=@JoinColumn(name="personId")
 	)
-	private List<User> friendOf;
+	private List<User> friendOf;*/
+
+	@OneToMany(mappedBy="to", fetch = FetchType.LAZY)
+	private List<Friends> friends;
+
+	@OneToMany(mappedBy="from", fetch = FetchType.LAZY)
+	private List<Friends> friendsOf;
+
+	@OneToMany(mappedBy="to")
+	@JsonIgnoreProperties("to")
+	private List<InvitationsToFriends> invitationsToFriends;
 
 
-
-	@ManyToMany
-	@JoinTable(name="tbl_invites_to_friends",
-			joinColumns=@JoinColumn(name="personId"),
-			inverseJoinColumns=@JoinColumn(name="invited_personId")
-	)
-	private List<User> invitedFriends;
-
-	@ManyToMany
-	@JoinTable(name="tbl_invites_to_friends",
-			joinColumns=@JoinColumn(name="invited_personId"),
-			inverseJoinColumns=@JoinColumn(name="personId")
-	)
-	private List<User> invitedToFriends;
-
-
+	@OneToMany(mappedBy="from")
+	@JsonIgnoreProperties("from")
+	private List<InvitationsToFriends> invitedFriends;
 
 
 
@@ -122,4 +124,135 @@ public class User {
 		this.password = password;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@JsonIgnore
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public Date getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+	public Long getExperience() {
+		return experience;
+	}
+
+	public void setExperience(Long experience) {
+		this.experience = experience;
+	}
+
+	public Set<BoardPost> getBoardPosts() {
+		return boardPosts;
+	}
+
+	public void setBoardPosts(Set<BoardPost> boardPosts) {
+		this.boardPosts = boardPosts;
+	}
+
+	public Set<BoardPost> getLikedBoards() {
+		return likedBoards;
+	}
+
+	public void setLikedBoards(Set<BoardPost> likedBoards) {
+		this.likedBoards = likedBoards;
+	}
+
+	public List<Friends> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(List<Friends> friends) {
+		this.friends = friends;
+	}
+
+	public List<Friends> getFriendsOf() {
+		return friendsOf;
+	}
+
+	public void setFriendsOf(List<Friends> friendsOf) {
+		this.friendsOf = friendsOf;
+	}
+
+
+	public List<InvitationsToFriends> getInvitationsToFriends() {
+		return invitationsToFriends;
+	}
+
+	public void setInvitationsToFriends(List<InvitationsToFriends> invitationsToFriends) {
+		this.invitationsToFriends = invitationsToFriends;
+	}
+
+
+	public List<InvitationsToFriends> getInvitedFriends() {
+		return invitedFriends;
+	}
+
+	public void setInvitedFriends(List<InvitationsToFriends> invitedFriends) {
+		this.invitedFriends = invitedFriends;
+	}
 }
