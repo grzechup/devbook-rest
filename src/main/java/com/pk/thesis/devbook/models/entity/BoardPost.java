@@ -27,6 +27,7 @@ public class BoardPost extends Post {
     @JoinColumn(name = "board_comments", referencedColumnName = "id")
     private List<BoardComment> comments;
 
+    @Lob
     private String content;
 
     public BoardPost(String content, User user, Date created){

@@ -6,7 +6,7 @@ import com.pk.thesis.devbook.models.dto.UserDTO;
 import com.pk.thesis.devbook.models.entity.Friends;
 import com.pk.thesis.devbook.models.entity.InvitationsToFriends;
 import com.pk.thesis.devbook.models.entity.User;
-import com.pk.thesis.devbook.payload.request.InvitationUsernamesRequest;
+import com.pk.thesis.devbook.payload.request.InvitationToFriendsList;
 import com.pk.thesis.devbook.repository.FriendsRepository;
 import com.pk.thesis.devbook.repository.InvitationsToFriendsRepository;
 import com.pk.thesis.devbook.repository.UserRepository;
@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,7 +47,7 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public FullUserDTO inviteFriend(InvitationUsernamesRequest request) {
+    public FullUserDTO inviteFriend(InvitationToFriendsList request) {
         User userToInvite = userRepository.findByUsername(request.getUsernameToProcess())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         User user = userRepository.findByUsername(request.getMainUsername())
@@ -76,15 +77,16 @@ public class UserService {
                 .map(user -> modelMapper.map(user, FullUserDTO.class));
     }
 
-    public FullUserDTO acceptUserInvitationToFriends(InvitationUsernamesRequest request) {
+    public FullUserDTO acceptUserInvitationToFriends(InvitationToFriendsList request) {
         User mainUser = getUserByUsername(request.getMainUsername());
         User userToAccept = getUserByUsername(request.getUsernameToProcess());
         Friends friends = new Friends(userToAccept, mainUser, new Date());
         InvitationsToFriends invitationToDelete = mainUser.getInvitationsToFriends().stream()
                 .filter(inv -> inv.getFrom().getUsername().equals(userToAccept.getUsername()))
-                .findFirst().orElseThrow(() -> new UsernameNotFoundException("Invitation not exist"));
+                .findFirst().orElseThrow(() -> new EntityNotFoundException("Invitation not exist"));
+        mainUser.getFriends().add(friends);
+        userToAccept.getFriendsAccepted().add(friends);
         invitationsToFriendsRepository.deleteById(invitationToDelete.getId());
-        friendsRepository.save(friends);
         return modelMapper.map(mainUser, FullUserDTO.class);
     }
 

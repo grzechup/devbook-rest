@@ -19,6 +19,7 @@ public abstract class Comment {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @Lob
     @Column
     private String content;
 

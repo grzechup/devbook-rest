@@ -81,10 +81,10 @@ public class User implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<BoardPost> likedBoards;
 
-	@OneToMany(mappedBy="to")
+	@OneToMany(mappedBy="to", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<Friends> friends;
 
-	@OneToMany(mappedBy="from")
+	@OneToMany(mappedBy="from",fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<Friends> friendsAccepted;
 
 	@OneToMany(mappedBy="to")

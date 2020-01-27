@@ -3,7 +3,7 @@ package com.pk.thesis.devbook.payload.request;
 import lombok.Data;
 
 @Data
-public class InvitationUsernamesRequest {
+public class InvitationToFriendsList {
 
     private String mainUsername;
     private String usernameToProcess;

@@ -1,7 +1,6 @@
 package com.pk.thesis.devbook.models.dto;
 
 import com.pk.thesis.devbook.models.ERole;
-import com.pk.thesis.devbook.models.entity.BoardPost;
 import lombok.Data;
 
 import java.util.List;
@@ -19,8 +18,8 @@ public class FullUserDTO {
     private List<ToUserDTO> invitedFriends;
     private List<FromUserDTO> invitationsToFriends;
 
-    private List<BoardPost> boardPosts;
-    private List<BoardPost> likedBoards;
+    private List<BoardPostDTO> boardPosts;
+    private List<BoardPostDTO> likedBoards;
     private Long experience;
     private Set<ERole> roles;
 

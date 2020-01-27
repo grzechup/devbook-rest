@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,9 +51,11 @@ public class BoardService {
         boardPosts.addAll(user.getBoardPosts());
         List<BoardPost> friendsPosts = new ArrayList<>();
         friendsPosts.addAll(user.getFriends().stream()
-                .map(friend -> friend.getFrom().getBoardPosts()).findFirst().orElse(Collections.emptyList()));
+                .map(f -> f.getFrom().getBoardPosts()).collect(Collectors.toList()).stream()
+                .collect(ArrayList::new, List::addAll, List::addAll));
         friendsPosts.addAll(user.getFriendsAccepted().stream()
-                .map(friend -> friend.getTo().getBoardPosts()).findFirst().orElse(Collections.emptyList()));
+                .map(f -> f.getTo().getBoardPosts()).collect(Collectors.toList()).stream()
+                .collect(ArrayList::new, List::addAll, List::addAll));
         boardPosts.addAll(friendsPosts);
         return boardPosts.stream().map(b -> modelMapper.map(b, BoardPostDTO.class)).collect(Collectors.toList());
     }

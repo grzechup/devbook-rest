@@ -4,7 +4,7 @@ import com.pk.thesis.devbook.DevbookProperties;
 import com.pk.thesis.devbook.models.dto.FriendsAndInvitationsDTO;
 import com.pk.thesis.devbook.models.dto.FullUserDTO;
 import com.pk.thesis.devbook.models.dto.UserDTO;
-import com.pk.thesis.devbook.payload.request.InvitationUsernamesRequest;
+import com.pk.thesis.devbook.payload.request.InvitationToFriendsList;
 import com.pk.thesis.devbook.service.UserService;
 import com.pk.thesis.devbook.util.AuthUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -58,12 +58,12 @@ public class UserController {
     }
 
     @PostMapping(value = "/invite")
-    public ResponseEntity<FullUserDTO> inviteFriend(@RequestBody InvitationUsernamesRequest request) {
+    public ResponseEntity<FullUserDTO> inviteFriend(@RequestBody InvitationToFriendsList request) {
         return ResponseEntity.ok(userService.inviteFriend(request));
     }
 
     @PostMapping("/invitations/accept")
-    public ResponseEntity<FullUserDTO> acceptUserInvitationToFriends(@RequestBody InvitationUsernamesRequest request){
+    public ResponseEntity<FullUserDTO> acceptUserInvitationToFriends(@RequestBody InvitationToFriendsList request){
         return ResponseEntity.ok(userService.acceptUserInvitationToFriends(request));
     }
 
