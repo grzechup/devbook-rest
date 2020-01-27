@@ -1,21 +1,32 @@
 package com.pk.thesis.devbook.models.entity;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @MappedSuperclass
 public abstract class Post {
 
     @Id
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id" , unique=true, nullable = false)
     private Long id;
 
+    @Column(name = "content")
     private String content;
 
-    @OneToMany
-    @JoinColumn(name = "comments", referencedColumnName = "id")
-    private Set<BoardComment> comments;
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

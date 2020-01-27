@@ -7,4 +7,5 @@ public class ReducedInvitationsToFriendsDTO {
 
     private ReducedUserDTO from;
     private ReducedUserDTO to;
+
 }

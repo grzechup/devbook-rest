@@ -1,9 +1,12 @@
 package com.pk.thesis.devbook.controllers;
 
 import com.pk.thesis.devbook.DevbookProperties;
+import com.pk.thesis.devbook.models.dto.FriendsAndInvitationsDTO;
+import com.pk.thesis.devbook.models.dto.FullUserDTO;
 import com.pk.thesis.devbook.models.dto.UserDTO;
 import com.pk.thesis.devbook.payload.request.InvitationUsernamesRequest;
 import com.pk.thesis.devbook.service.UserService;
+import com.pk.thesis.devbook.util.AuthUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,25 +39,31 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserDTO(username));
     }
 
+    @GetMapping(value = "/friends-and-invitations")
+    public ResponseEntity<FriendsAndInvitationsDTO> getFriendsAndInvitations(){
+        String username = AuthUtil.getLoggedUsername();
+        return ResponseEntity.ok(userService.getFriendsAndInvitations(username));
+    }
+
     //TODO: dodac parametry do paginacji
     @GetMapping(value = "/search")
-    public ResponseEntity<Page<UserDTO>> searchUserByUsername(@RequestParam("username") Optional<String> username){
+    public ResponseEntity<Page<FullUserDTO>> searchUserByUsername(@RequestParam("username") Optional<String> username){
         return ResponseEntity.ok(userService.searchUser(username.orElse("_"), PageRequest.of(0,5)));
     }
 
     //TODO
     @GetMapping(value = "/search/by-names/")
-    public ResponseEntity<List<UserDTO>> searchUsersByNames(){
+    public ResponseEntity<List<FullUserDTO>> searchUsersByNames(){
         return null;
     }
 
     @PostMapping(value = "/invite")
-    public ResponseEntity<UserDTO> inviteFriend(@RequestBody InvitationUsernamesRequest request) {
+    public ResponseEntity<FullUserDTO> inviteFriend(@RequestBody InvitationUsernamesRequest request) {
         return ResponseEntity.ok(userService.inviteFriend(request));
     }
 
     @PostMapping("/invitations/accept")
-    public ResponseEntity<UserDTO> acceptUserInvitationToFriends(@RequestBody InvitationUsernamesRequest request){
+    public ResponseEntity<FullUserDTO> acceptUserInvitationToFriends(@RequestBody InvitationUsernamesRequest request){
         return ResponseEntity.ok(userService.acceptUserInvitationToFriends(request));
     }
 

@@ -1,5 +1,7 @@
 package com.pk.thesis.devbook.service;
 
+import com.pk.thesis.devbook.models.dto.FriendsAndInvitationsDTO;
+import com.pk.thesis.devbook.models.dto.FullUserDTO;
 import com.pk.thesis.devbook.models.dto.UserDTO;
 import com.pk.thesis.devbook.models.entity.Friends;
 import com.pk.thesis.devbook.models.entity.InvitationsToFriends;
@@ -9,14 +11,12 @@ import com.pk.thesis.devbook.repository.FriendsRepository;
 import com.pk.thesis.devbook.repository.InvitationsToFriendsRepository;
 import com.pk.thesis.devbook.repository.UserRepository;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,10 +27,6 @@ public class UserService {
     private UserRepository userRepository;
     private ModelMapper modelMapper;
     private InvitationsToFriendsRepository invitationsToFriendsRepository;
-    private Type userDtoType = new TypeToken<List<UserDTO>>() {
-    }.getType();
-    private Type pageDtoType = new TypeToken<Page<UserDTO>>() {
-    }.getType();
     private FriendsRepository friendsRepository;
 
     @Autowired
@@ -50,7 +46,7 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public UserDTO inviteFriend(InvitationUsernamesRequest request) {
+    public FullUserDTO inviteFriend(InvitationUsernamesRequest request) {
         User userToInvite = userRepository.findByUsername(request.getUsernameToProcess())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         User user = userRepository.findByUsername(request.getMainUsername())
@@ -69,31 +65,37 @@ public class UserService {
             invitationsToFriendsRepository.save(invitation);
 
       /*      user.getInvitedFriends().add(userToInvite);*/
-            return modelMapper.map(userRepository.save(user), UserDTO.class);
+            return modelMapper.map(userRepository.save(user), FullUserDTO.class);
         } else {
             return null; //user juz jest zaproszony do znajomych!
         }
     }
 
-    public Page<UserDTO> searchUser(String username, PageRequest pageable) {
+    public Page<FullUserDTO> searchUser(String username, PageRequest pageable) {
         return userRepository.searchUsersByUsername(username, pageable)
-                .map(user -> modelMapper.map(user, UserDTO.class));
+                .map(user -> modelMapper.map(user, FullUserDTO.class));
     }
 
-    public UserDTO acceptUserInvitationToFriends(InvitationUsernamesRequest request) {
-        User mainUser = getUser(request.getMainUsername());
-        User userToAccept = getUser(request.getUsernameToProcess());
+    public FullUserDTO acceptUserInvitationToFriends(InvitationUsernamesRequest request) {
+        User mainUser = getUserByUsername(request.getMainUsername());
+        User userToAccept = getUserByUsername(request.getUsernameToProcess());
         Friends friends = new Friends(userToAccept, mainUser, new Date());
         InvitationsToFriends invitationToDelete = mainUser.getInvitationsToFriends().stream()
                 .filter(inv -> inv.getFrom().getUsername().equals(userToAccept.getUsername()))
-                .findFirst().orElse(null);
+                .findFirst().orElseThrow(() -> new UsernameNotFoundException("Invitation not exist"));
         invitationsToFriendsRepository.deleteById(invitationToDelete.getId());
         friendsRepository.save(friends);
-        return modelMapper.map(mainUser, UserDTO.class);
+        return modelMapper.map(mainUser, FullUserDTO.class);
     }
 
-    private User getUser(String username) {
+    public FriendsAndInvitationsDTO getFriendsAndInvitations(String username) {
+        User user = getUserByUsername(username);
+        return modelMapper.map(user,FriendsAndInvitationsDTO.class);
+    }
+
+    public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not exist"));
     }
+
 }

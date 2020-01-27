@@ -8,7 +8,10 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -64,26 +67,22 @@ public class User implements Serializable {
 	@Column(name = "profile_photo_id")
 	private Long profilePhotoId;*/
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(	name = "user_board_posts",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "board_post_id"))
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Set<BoardPost> boardPosts = new HashSet<>();
+	@OneToMany(mappedBy="user")
+	private List<BoardPost> boardPosts;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(
 			name = "board_posts__like",
 			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "board_post_id"))
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Set<BoardPost> likedBoards;
+	private List<BoardPost> likedBoards;
 
 	@OneToMany(mappedBy="to")
 	private List<Friends> friends;
 
 	@OneToMany(mappedBy="from")
-	private List<Friends> friendsOf;
+	private List<Friends> friendsAccepted;
 
 	@OneToMany(mappedBy="to")
 	private List<InvitationsToFriends> invitationsToFriends;
@@ -182,19 +181,19 @@ public class User implements Serializable {
 		this.experience = experience;
 	}
 
-	public Set<BoardPost> getBoardPosts() {
+	public List<BoardPost> getBoardPosts() {
 		return boardPosts;
 	}
 
-	public void setBoardPosts(Set<BoardPost> boardPosts) {
+	public void setBoardPosts(List<BoardPost> boardPosts) {
 		this.boardPosts = boardPosts;
 	}
 
-	public Set<BoardPost> getLikedBoards() {
+	public List<BoardPost> getLikedBoards() {
 		return likedBoards;
 	}
 
-	public void setLikedBoards(Set<BoardPost> likedBoards) {
+	public void setLikedBoards(List<BoardPost> likedBoards) {
 		this.likedBoards = likedBoards;
 	}
 
@@ -206,12 +205,12 @@ public class User implements Serializable {
 		this.friends = friends;
 	}
 
-	public List<Friends> getFriendsOf() {
-		return friendsOf;
+	public List<Friends> getFriendsAccepted() {
+		return friendsAccepted;
 	}
 
-	public void setFriendsOf(List<Friends> friendsOf) {
-		this.friendsOf = friendsOf;
+	public void setFriendsAccepted(List<Friends> friendsAccepted) {
+		this.friendsAccepted = friendsAccepted;
 	}
 
 

@@ -23,12 +23,12 @@ public class InvitationsToFriends implements Serializable{
     private User to;
 
     @Column(name = "invitation_date")
-    private Date invitationDate;
+    private Date date;
 
     public InvitationsToFriends(User from, User to, Date start) {
         this.from = from;
         this.to = to;
-        this.invitationDate = start;
+        this.date = start;
     }
 
     @Override
@@ -68,10 +68,10 @@ public class InvitationsToFriends implements Serializable{
     }
 
     public Date getInvitationDate() {
-        return invitationDate;
+        return date;
     }
 
     public void setInvitationDate(Date invitationDate) {
-        this.invitationDate = invitationDate;
+        this.date = invitationDate;
     }
 }

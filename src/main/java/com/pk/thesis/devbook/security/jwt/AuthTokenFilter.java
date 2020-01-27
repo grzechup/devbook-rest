@@ -25,6 +25,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
 
+	@Autowired
+	private HttpServletRequest context;
+
 	private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
 	@Override
@@ -57,5 +60,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		}
 
 		return null;
+	}
+
+	public String getLoggedUsername(){
+		String token  = parseJwt(context);
+		return jwtUtils.getUserNameFromJwtToken(token);
 	}
 }
