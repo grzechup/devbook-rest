@@ -14,4 +14,8 @@ public class NanoblogComment extends Comment {
 
     @OneToMany
     private Set<User> minuses;
+
+    public NanoblogComment(User user, String content){
+        super(user,content);
+    }
 }

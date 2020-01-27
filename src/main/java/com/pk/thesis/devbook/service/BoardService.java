@@ -1,8 +1,11 @@
 package com.pk.thesis.devbook.service;
 
+import com.pk.thesis.devbook.models.dto.BoardCommentDTO;
 import com.pk.thesis.devbook.models.dto.BoardPostDTO;
+import com.pk.thesis.devbook.models.entity.BoardComment;
 import com.pk.thesis.devbook.models.entity.BoardPost;
 import com.pk.thesis.devbook.models.entity.User;
+import com.pk.thesis.devbook.repository.BoardCommentRepository;
 import com.pk.thesis.devbook.repository.BoardPostRepository;
 import com.pk.thesis.devbook.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -26,16 +29,19 @@ public class BoardService {
     private UserRepository userRepository;
     private ModelMapper modelMapper;
     private UserService userService;
+    private BoardCommentRepository commentRepository;
 
     @Autowired
     public BoardService(BoardPostRepository boardRepository,
                         UserRepository userRepository,
                         ModelMapper modelMapper,
-                        UserService userService) {
+                        UserService userService,
+                        BoardCommentRepository commentRepository) {
         this.boardRepository = boardRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
+        this.commentRepository = commentRepository;
     }
 
 
@@ -73,12 +79,29 @@ public class BoardService {
 
     @Transactional
     public BoardPostDTO unlikeBoardPost(String username, Long id) {
-        BoardPost boardPost = boardRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("BoardPost not found"));
+        BoardPost boardPost = getBoardPostById(id);
         User user = userService.getUserByUsername(username);
         boardPost.getLikes().remove(user);
         user.getLikedBoards().remove(boardPost);
         return modelMapper.map(boardPost,BoardPostDTO.class);
+    }
+
+    @Transactional
+    public BoardCommentDTO commentBoardPost(String username, Long id, String content) {
+        BoardPost boardPost = getBoardPostById(id);
+        User user = userService.getUserByUsername(username);
+
+        BoardComment comment = new BoardComment(user, content);
+        commentRepository.save(comment);
+        boardPost.getComments().add(comment);
+        user.getBoardComments().add(comment);
+        return modelMapper.map(comment,BoardCommentDTO.class);
+    }
+
+
+    private BoardPost getBoardPostById(Long id){
+        return boardRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("BoardPost not found"));
     }
 }
 

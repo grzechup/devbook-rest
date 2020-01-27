@@ -14,4 +14,8 @@ public class NullpointerComment  extends Comment {
 
     @OneToMany
     private Set<User> points;
+
+    public NullpointerComment(User user, String content){
+        super(user,content);
+    }
 }

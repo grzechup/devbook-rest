@@ -1,21 +1,32 @@
 package com.pk.thesis.devbook.models.entity;
 
-import lombok.Data;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Set;
+import java.util.List;
 
-@Data
 @Entity
 @Table(name = "board_comment")
 public class BoardComment extends Comment {
 
     @Column
     @OneToMany
-    private Set<User> likes;
+    private List<User> likes;
 
+    public BoardComment(User user, String content) {
+        super(user, content);
+    }
 
+    public BoardComment() {
+        super();
+    }
+
+    public List<User> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<User> likes) {
+        this.likes = likes;
+    }
 }

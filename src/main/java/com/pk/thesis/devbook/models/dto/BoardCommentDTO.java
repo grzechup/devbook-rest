@@ -6,12 +6,11 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class BoardPostDTO {
+public class BoardCommentDTO {
 
     private Long id;
-    private ReducedUserDTO user;
-    private Date created;
+    private UsernameDTO user;
     private String content;
     private List<UsernameDTO> likes;
-    private List<BoardCommentDTO> boardComments;
+    private Date created;
 }

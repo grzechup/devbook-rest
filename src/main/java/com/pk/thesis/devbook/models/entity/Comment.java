@@ -1,7 +1,13 @@
 package com.pk.thesis.devbook.models.entity;
 
-import javax.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.util.Date;
+
+@NoArgsConstructor
+@Data
 @MappedSuperclass
 public abstract class Comment {
 
@@ -9,12 +15,21 @@ public abstract class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @Column
     private String content;
+
+    @Column
+    private Date created;
+
+    public Comment(User user, String content){
+        this.user=user;
+        this.content = content;
+        this.created = new Date();
+    }
 
 }
 

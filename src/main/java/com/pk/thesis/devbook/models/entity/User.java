@@ -70,6 +70,9 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="user")
 	private List<BoardPost> boardPosts;
 
+	@OneToMany(mappedBy="user")
+	private List<BoardComment> boardComments;
+
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(
 			name = "board_posts__like",
@@ -229,5 +232,13 @@ public class User implements Serializable {
 
 	public void setInvitedFriends(List<InvitationsToFriends> invitedFriends) {
 		this.invitedFriends = invitedFriends;
+	}
+
+	public List<BoardComment> getBoardComments() {
+		return boardComments;
+	}
+
+	public void setBoardComments(List<BoardComment> boardComments) {
+		this.boardComments = boardComments;
 	}
 }
