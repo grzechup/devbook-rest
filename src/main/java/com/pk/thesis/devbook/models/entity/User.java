@@ -81,6 +81,36 @@ public class User implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<BoardPost> likedBoards;
 
+
+
+
+	@OneToMany(mappedBy="user")
+	private List<NanoblogPost> nanoblogPosts;
+
+	@OneToMany(mappedBy="user")
+	private List<NanoblogComment> nanoblogComments;
+
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(
+			name = "nanoblog_posts_plus",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "nanoblog_post_id"))
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<NanoblogPost> plusedNanoblogs;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(
+			name = "nanoblog_posts_minuses",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "nanoblog_post_id"))
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<NanoblogPost> minusedNanoblogs;
+
+
+
+
+
 	@OneToMany(mappedBy="to", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<Friends> friends;
 

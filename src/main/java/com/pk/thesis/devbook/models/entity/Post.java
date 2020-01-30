@@ -1,6 +1,7 @@
 package com.pk.thesis.devbook.models.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @MappedSuperclass
 public abstract class Post {
@@ -8,10 +9,17 @@ public abstract class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id" , unique=true, nullable = false)
-    private Long id;
+    protected Long id;
 
-    @Column(name = "content")
-    private String content;
+    @ManyToOne
+    protected User user;
+
+    @Lob
+    protected String content;
+
+
+
+    protected Date created;
 
 
     public Long getId() {
@@ -28,5 +36,21 @@ public abstract class Post {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 }

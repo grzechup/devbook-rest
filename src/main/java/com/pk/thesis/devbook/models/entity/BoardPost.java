@@ -12,23 +12,15 @@ import java.util.List;
 @Data
 @Entity(name = "board_post")
 public class BoardPost extends Post {
-
-    @ManyToOne
-    private User user;
-
-    private Date created;
-
 /*    @Column(name = "photo_id")
     private Long photoId;*/
-    @ManyToMany(mappedBy = "likedBoards", cascade = CascadeType.ALL)
-    private List<User> likes = new ArrayList<>();
 
     @OneToMany()
     @JoinColumn(name = "board_comments", referencedColumnName = "id")
     private List<BoardComment> comments;
 
-    @Lob
-    private String content;
+    @ManyToMany(mappedBy = "likedBoards", cascade = CascadeType.ALL)
+    private List<User> likes = new ArrayList<>();
 
     public BoardPost(String content, User user, Date created){
         super();
