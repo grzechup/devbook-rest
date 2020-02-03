@@ -22,6 +22,7 @@ public class InvitationsToFriends implements Serializable{
     @JoinColumn(name="to_user_fk")
     private User to;
 
+    //TODO: dodac info w gui od kiedy jest zaproszenie
     @Column(name = "invitation_date")
     private Date date;
 

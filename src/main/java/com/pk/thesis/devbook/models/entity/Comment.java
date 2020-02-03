@@ -26,10 +26,14 @@ public abstract class Comment {
     @Column
     private Date created;
 
+    @Column
+    private Boolean isDeleted;
+
     public Comment(User user, String content){
         this.user=user;
         this.content = content;
         this.created = new Date();
+        this.isDeleted = false;
     }
 
 }

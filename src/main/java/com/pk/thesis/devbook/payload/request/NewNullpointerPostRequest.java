@@ -3,8 +3,8 @@ package com.pk.thesis.devbook.payload.request;
 import lombok.Data;
 
 @Data
-public class NewBoardCommentRequest {
+public class NewNullpointerPostRequest {
 
-    private Long id;
+    private String title;
     private String content;
 }

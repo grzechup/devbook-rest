@@ -22,6 +22,8 @@ public class Friends {
     @JoinColumn(name="to_user_fk")
     private User to;
 
+
+    //TODO: dodac info w gui od kiedy jest sie znajomym
     @Column(name = "friendship_date_start")
     private Date friendshipDateStart;
 

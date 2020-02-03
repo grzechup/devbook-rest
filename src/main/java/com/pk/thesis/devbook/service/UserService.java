@@ -6,7 +6,7 @@ import com.pk.thesis.devbook.models.dto.UserDTO;
 import com.pk.thesis.devbook.models.entity.Friends;
 import com.pk.thesis.devbook.models.entity.InvitationsToFriends;
 import com.pk.thesis.devbook.models.entity.User;
-import com.pk.thesis.devbook.payload.request.InvitationToFriendsList;
+import com.pk.thesis.devbook.payload.request.InvitationToFriendsListRequest;
 import com.pk.thesis.devbook.repository.FriendsRepository;
 import com.pk.thesis.devbook.repository.InvitationsToFriendsRepository;
 import com.pk.thesis.devbook.repository.UserRepository;
@@ -47,7 +47,7 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public FullUserDTO inviteFriend(InvitationToFriendsList request) {
+    public FullUserDTO inviteFriend(InvitationToFriendsListRequest request) {
         User userToInvite = userRepository.findByUsername(request.getUsernameToProcess())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         User user = userRepository.findByUsername(request.getMainUsername())
@@ -77,7 +77,7 @@ public class UserService {
                 .map(user -> modelMapper.map(user, FullUserDTO.class));
     }
 
-    public FullUserDTO acceptUserInvitationToFriends(InvitationToFriendsList request) {
+    public FullUserDTO acceptUserInvitationToFriends(InvitationToFriendsListRequest request) {
         User mainUser = getUserByUsername(request.getMainUsername());
         User userToAccept = getUserByUsername(request.getUsernameToProcess());
         Friends friends = new Friends(userToAccept, mainUser, new Date());

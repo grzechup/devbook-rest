@@ -1,7 +1,7 @@
 package com.pk.thesis.devbook.controllers;
 
 import com.pk.thesis.devbook.models.dto.BoardPostDTO;
-import com.pk.thesis.devbook.payload.request.NewBoardCommentRequest;
+import com.pk.thesis.devbook.payload.request.NewCommentRequest;
 import com.pk.thesis.devbook.service.BoardService;
 import com.pk.thesis.devbook.util.AuthUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +52,7 @@ public class BoardController {
     }
 
     @PostMapping("/comment")
-    public ResponseEntity<?> commentBoardPost(@RequestBody NewBoardCommentRequest request){
+    public ResponseEntity<?> commentBoardPost(@RequestBody NewCommentRequest request){
         String username = AuthUtil.getLoggedUsername();
         log.info("User {} unliked baord post with id: {}", username, request.getId());
         return ResponseEntity.ok(boardService.commentBoardPost(username,request.getId(), request.getContent()));
